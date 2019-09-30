@@ -1,0 +1,420 @@
+#+Title: Adjunctions
+#+Author: Mario Román
+#+latex_class: amsart
+#+latex_class_options: [11pt, dvipsnames]
+#+options: todo:nil toc:nil
+
+* Header                                                                                    :ignore:
+** Header                                                                                  :ignore:
+#+latex_header: \usepackage[a4paper,verbose]{geometry}
+#+latex_header: \geometry{top=3cm,bottom=3cm,left=3cm,right=3cm,textheight=595pt}
+#+latex_header: \setlength{\parskip}{0.3em}
+
+#+latex_header: \usepackage{amsfonts}
+#+latex_header: \usepackage{amssymb}
+#+latex_header: \usepackage{amsthm}
+#+latex_header: \usepackage{amsmath}
+#+latex_header: \usepackage{tipa}
+#+latex_header: \usepackage{caption}
+#+latex_header: \usepackage[dvipsnames]{xcolor}
+#+latex_header: \usepackage[inline]{enumitem}
+#+latex_header: \setlist{itemsep=0em, topsep=0em, parsep=0em}
+#+latex_header: \setlist[enumerate]{label=(\alph*)}
+#+latex_header: \usepackage{etoolbox}
+#+latex_header: \usepackage{stmaryrd} 
+#+latex_header: \usepackage{hyperref}
+#+latex_header: \hypersetup{
+#+latex_header:   colorlinks=true,
+#+latex_header:   linkcolor=[rgb]{0.0,0.27,0.13},
+#+latex_header:   citecolor=[rgb]{0.0,0.27,0.13},
+#+latex_header:   urlcolor=[rgb]{0.0,0.27,0.13}}
+#+latex_header: \usepackage{graphicx}
+#+latex_header: \graphicspath{{assets/}}
+#+latex_header: \usepackage{mathtools}
+#+latex_header: 
+#+latex_header: \usepackage{minted}
+#+latex_header: \usepackage{tikz}
+#+latex_header: \usepackage{float}
+#+latex_header: \usetikzlibrary{
+#+latex_header:   matrix,
+#+latex_header:   arrows,
+#+latex_header:   shapes
+#+latex_header: }
+
+#+latex_header: \usepackage{tikz-cd}
+
+#+latex_header: \usepackage{CJKutf8}\usepackage[utf8]{inputenc} 
+#+latex_header: \newcommand{\hirayo}{\text{\usefont{U}{min}{m}{n}\symbol{'210}}} 
+#+latex_header: \newcommand{\hirata}{\text{\usefont{U}{min}{m}{n}\symbol{'137}}} \DeclareFontFamily{U}{min}{} \DeclareFontShape{U}{min}{m}{n}{<-> udmj30}{}
+
+** AMS packages                                                                            :ignore:
+#+latex_header: \usepackage{amsfonts}
+#+latex_header: \usepackage{amssymb}
+#+latex_header: \usepackage{amsthm}
+#+latex_header: \usepackage{amsmath}
+#+latex_header: \usepackage[margin=1cm]{caption}
+#+latex_header: \allowdisplaybreaks
+
+#+latex_header: \usepackage{bussproofs}
+#+latex_header: \EnableBpAbbreviations{}
+
+** Theorem styles                                                                          :ignore:
+#+latex_header_extra: \theoremstyle{plain}
+#+latex_header_extra: \newtheorem{theorem}{Theorem}
+#+latex_header_extra: \newtheorem{proposition}[theorem]{Proposition}
+#+latex_header_extra: \newtheorem{question}[theorem]{Question}
+#+latex_header_extra: \newtheorem{requestion}[theorem]{Research Question}
+#+latex_header_extra: \newtheorem{lemma}[theorem]{Lemma}
+#+latex_header_extra: \newtheorem{corollary}[theorem]{Corollary}
+#+latex_header_extra: \theoremstyle{definition}
+#+latex_header_extra: \newtheorem{definition}[theorem]{Definition}
+#+latex_header_extra: \newtheorem{axiom}[theorem]{Axiom}
+#+latex_header_extra: \newtheorem{proofs}{Proof}
+#+latex_header_extra: \theoremstyle{remark}
+#+latex_header_extra: \newtheorem{remark}[theorem]{Remark}
+#+latex_header_extra: \newtheorem{exampleth}[theorem]{Example}
+#+latex_header_extra: \begingroup\makeatletter\@for\theoremstyle:=definition,remark,plain\do{\expandafter\g@addto@macro\csname th@\theoremstyle\endcsname{\addtolength\thm@preskip\parskip}}\endgroup
+
+** Macros                                                                                  :ignore:
+#+latex_header: \newcommand{\R}{{\cal{R}}}
+#+latex_header: \newcommand{\Class}{\mathbf{S}}
+
+#+latex_header: \newcommand{\nto}{\nrightarrow}
+
+#+latex_header: \newcommand{\iam}[1]{
+#+latex_header:   \vspace{0.25em}
+#+latex_header:   \hrule
+#+latex_header:   \vspace{0.25em}
+#+latex_header:   \textbf{{#1} writes: }
+#+latex_header:   \vspace{0.25em}
+#+latex_header:   \hrule
+#+latex_header:   \vspace{1em}
+#+latex_header: }
+
+#+latex_header: \newcommand{\respond}[2]{\quad[\textbf{#1 says:} {\color{ForestGreen} #2}]\quad}
+#+latex_header: \newenvironment{note}{\quad\color{ForestGreen}\textbf{Note:} \begingroup\itshape}{\endgroup\quad}
+
+#+latex_header: \usepackage{mathtools}
+#+latex_header: \newcommand\id{\mathrm{id}}
+#+latex_header: \newcommand\dinat{\overset{\cdot\cdot}\to}
+#+latex_header: \newcommand\Id{\mathrm{Id}}
+#+latex_header: \newcommand\Nat{\mathrm{Nat}}
+#+latex_header: \newcommand\Grp{\mathsf{Grp}}
+#+latex_header: \newcommand\Set{\mathsf{Set}}
+#+latex_header: \newcommand\zet{\mathbb{Z}}
+#+latex_header: \newcommand\nat{\mathbb{N}}
+#+latex_header: \newcommand\lensto{\nrightarrow}
+#+latex_header: \newcommand\rat{\mathbb{Q}}
+#+latex_header: \newcommand\reals{\mathbb{R}}
+#+latex_header: \newcommand\com{\mathbb{C}}
+#+latex_header: \newcommand\hC{\widehat{\cal C}}
+#+latex_header: \newcommand\todot{\xrightarrow{.}}
+#+latex_header: \newcommand\tonat{\Rightarrow}
+#+latex_header: \newcommand\shape{\mbox{\textesh}}
+#+latex_header: \usepackage{mathtools}
+#+latex_header: \DeclarePairedDelimiter\pair{\langle}{\rangle}
+
+#+latex_header: \DeclarePairedDelimiter\abs{\lvert}{\rvert}%
+#+latex_header: \DeclarePairedDelimiter\norm{\lVert}{\rVert}%
+#+latex_header: \DeclarePairedDelimiter\brck{\llbracket}{\rrbracket}%
+
+#+latex_header: \newcommand\opticmorph[4]{\begin{pmatrix}#1 \\ #2\end{pmatrix} \to \begin{pmatrix}#3 \\ #4\end{pmatrix}}
+
+** Macros                                                                                  :ignore:
+#+latex_header: \newcommand{\repl}{\mathrm{repl}}
+#+latex_header: \newcommand{\img}{\mathrm{img}}
+#+latex_header: \newcommand{\App}{\mathbf{App}}
+
+#+latex_header: \newcommand{\optic}[2]{\langle #1 \mid #2 \rangle}
+#+latex_header: \newcommand{\trv}{\operatorname{trv}}
+#+latex_header: \newcommand{\Optic}{\mathbf{Optic}}
+#+latex_header: \newcommand{\Sets}{\mathbf{Sets}}
+#+latex_header: \newcommand{\Lan}{\mathsf{Lan}}
+#+latex_header: \newcommand{\Ran}{\mathsf{Ran}}
+#+latex_header: \newcommand{\Nat}{\mathrm{Nat}}
+
+#+latex_header: \newcommand{\Prof}{\mathbf{Prof}}
+#+latex_header: \newcommand{\C}{\mathbf{C}}
+#+latex_header: \newcommand{\D}{\mathbf{D}}
+#+latex_header: \newcommand{\M}{\mathbf{M}}
+#+latex_header: \newcommand{\N}{\mathbf{N}}
+#+latex_header: \newcommand{\mact}{\underline{m}}
+#+latex_header: \newcommand{\nact}{\underline{n}}
+#+latex_header: \newcommand{\iact}{\underline{i}}
+#+latex_header: \newcommand{\kact}{\underline{k}}
+
+#+latex_header: \newcommand{\nto}{\nrightarrow}
+#+latex_header: \newcommand\id{\mathrm{id}}
+#+latex_header: \newcommand\dinat{\overset{\cdot\cdot}\to}
+#+latex_header: \newcommand\Id{\mathrm{Id}}
+#+latex_header: \newcommand\Nat{\mathrm{Nat}}
+#+latex_header: \newcommand\Grp{\mathsf{Grp}}
+#+latex_header: \newcommand\Set{\mathsf{Set}}
+#+latex_header: \newcommand\zet{\mathbb{Z}}
+#+latex_header: \newcommand\nat{\mathbb{N}}
+#+latex_header: \newcommand\lensto{\nrightarrow}
+#+latex_header: \newcommand\rat{\mathbb{Q}}
+#+latex_header: \newcommand\reals{\mathbb{R}}
+#+latex_header: \newcommand\com{\mathbb{C}}
+#+latex_header: \newcommand\hC{\widehat{\cal C}}
+#+latex_header: \newcommand\todot{\xrightarrow{.}}
+#+latex_header: \newcommand\tonat{\Rightarrow}
+#+latex_header: \newcommand\shape{\mbox{\textesh}}
+#+latex_header: \newcommand\Vcat{\cal{V}\mbox{-category}}
+#+latex_header: \newcommand\Vfunctor{\cal{V}\mbox{-functor}}
+#+latex_header: \newcommand\Vt[1]{\cal{V}\mbox{-#1}}
+#+latex_header: \newcommand\V{{\cal{V}}}
+#+latex_header: \newcommand\opticmorph[4]{\begin{pmatrix}#1 \\ #2\end{pmatrix} \to \begin{pmatrix}#3 \\ #4\end{pmatrix}}
+
+#+latex_header: \DeclarePairedDelimiter\pair{\langle}{\rangle}
+#+latex_header: \DeclarePairedDelimiter\abs{\lvert}{\rvert}%
+#+latex_header: \DeclarePairedDelimiter\norm{\lVert}{\rVert}%
+#+latex_header: \DeclarePairedDelimiter\brck{\llbracket}{\rrbracket}%
+
+#+latex_header: \newcommand\diset[2]{\binom{#1}{#2}}
+ 
+** Colors                                                                                  :ignore:
+#+latex_header: \definecolor{ugrColor}{HTML}{c6474b} % Title
+#+latex_header: \definecolor{ugrColor2}{HTML}{c6474b} % Sections
+#+latex_header: \definecolor{redPRL}{HTML}{ad2231}
+#+latex_header: \definecolor{bluePRL}{HTML}{07608f}
+#+latex_header: \definecolor{greenPRL}{HTML}{078f60}
+
+#+latex_header: \colorlet{myred}{redPRL}
+#+latex_header: \colorlet{myblue}{bluePRL}
+#+latex_header: \newcommand{\red}[1]{{\color{myred}{{#1}}}}
+#+latex_header: \newcommand{\blue}[1]{{\color{myblue}{{#1}}}}
+#+latex_header: \newcommand{\ctypes}[1]{\color{bluePRL}{#1}}
+#+latex_header: \newcommand{\cterms}[1]{\color{redPRL}{\texttt{#1}}}
+
+* Particular macros                                                                         :ignore:
+#+latex_header: \newcommand{\X}{\mathbf{X}}
+#+latex_header: \newcommand{\Y}{\mathbf{Y}}
+#+latex_header: \newcommand{\Z}{\mathbf{Z}}
+#+latex_header: \newcommand{\F}{\red{F}}
+#+latex_header: \newcommand{\G}{\blue{G}}
+#+latex_header: \newcommand{\M}{\mathbf{M}}
+#+latex_header: \newcommand{\N}{\mathbf{N}}
+
+* Preliminaries
+* Adjunctions
+** Definition of adjunction
+*** Adjunction                                                                            :ignore:
+Adjunctions appear all around mathematics. We will see why they should
+be considered a foundational concept.  MacLane cite:maclane78 wrote
+that /"adjunctions arise everywhere"/.
+
+#+begin_definition
+An *adjunction* from categories $\X$ to $\Y$ is a pair of functors
+$F \colon \X \to \Y$ and $G\colon \Y \to \X$ endowed with bijections
+$\varphi_{X,Y} \colon \Y(\F X,Y) \cong \X(X,\G Y)$ such that, for every $f \in \Y(FX,Y)$,
+every $h \in \X(X',X)$ and every $k \in \Y(Y,Y')$,
+\[
+\varphi(f) \circ h = \varphi(f \circ Fh),
+\quad\mbox{and}\quad
+Gk \circ \varphi(f) = \varphi(k \circ f).
+\]
+These are called the /naturality/ conditions.
+We say that $\F$ is /left-adjoint/ to $\G$ and that $\G$ is /right-adjoint/ to
+$\F$, and we denote this as $\F \dashv \G$.
+#+end_definition
+
+*** Lawvere's notation                                                                    :ignore:
+Lawvere cite:lawvere309 proposed a different and maybe more intuitive way 
+to write adjunctions as logical diagrams. An adjunction $\F \dashv \G$ can be
+written as
+\begin{prooftree}
+\AXC{\begin{tikzcd}[fragile,ampersand replacement=\&] \F X \rar{f}\& Y \end{tikzcd}}
+\UIC{\begin{tikzcd}[fragile,ampersand replacement=\&] X \rar{\varphi{(f)}}\& \G Y \end{tikzcd}}
+\end{prooftree}
+to emphasize that, for each morphism $f\colon \F X \to Y$, there exists a unique
+morphism $\varphi(f)\colon X \to \G Y$; written in a way that resembles bidirectional
+logical inference rules.
+Naturality, in this setting, means that precomposition and postcomposition
+of arrows are preserved by the /inference rule/. Given morphisms $h \colon X' \to X$
+and $k \colon Y \to Y'$, naturality means precisely that the composed arrows of the
+following diagrams are adjoint to one another.
+\begin{prooftree}
+\AXC{\begin{tikzcd}[fragile,ampersand replacement=\&] 
+\F X' \ar[bend left=45]{rr}{f \circ Fh} \rar{Fh}\& 
+\F X \rar{f}\& 
+Y
+\end{tikzcd}}
+\UIC{\begin{tikzcd}[fragile,ampersand replacement=\&]
+X' \ar[bend right=45]{rr}[swap]{\varphi(f) \circ h} \rar[swap]{h}\& 
+X \rar[swap]{\varphi(f)}\&
+\G Y 
+\end{tikzcd}}
+\AXC{\begin{tikzcd}[fragile,ampersand replacement=\&]
+\F X \ar[bend left=45]{rr}{k \circ f} \rar{f}\&
+Y \rar{k}\&
+Y' \end{tikzcd}}
+\UIC{\begin{tikzcd}[fragile,ampersand replacement=\&]
+X \ar[bend right=45]{rr}[swap]{Gk \circ \varphi(f)} \rar[swap]{\varphi(f)}\&
+\G Y \rar[swap]{Gk}\&
+\G Y'\end{tikzcd}}
+\noLine
+\BIC{}
+\end{prooftree}
+
+** Units and counits
+In the following two propositions, we will characterize all this
+information in terms of natural transformations made up of universal
+arrows. 
+
+#+begin_definition
+Let $\F \dashv \G$ be an adjunction.  We define the *unit* $\eta$ to be a family of
+morphisms $\eta_X \colon X \to \G \F X$ defined by $\eta_X = \varphi(\id_{FX})$.  We define the
+*counit* $\varepsilon$ to be a family of morphisms $\varepsilon_Y \colon \F \G Y \to Y$ defined by
+$\varepsilon_Y = \varphi^{-1}(\id_{GY})$.
+\begin{prooftree}
+\AXC{\begin{tikzcd}[fragile,ampersand replacement=\&] \F X \rar{\id}\& \F X \end{tikzcd}}
+\UIC{\begin{tikzcd}[fragile,ampersand replacement=\&] X \rar{\eta_{X}}\& \G\F X \end{tikzcd}}
+\AXC{\begin{tikzcd}[fragile,ampersand replacement=\&] \F\G Y \rar{\varepsilon_{Y}}\& Y \end{tikzcd}}
+\UIC{\begin{tikzcd}[fragile,ampersand replacement=\&] \G Y \rar{\id}\& \G Y \end{tikzcd}}
+\noLine
+\BIC{}
+\end{prooftree}
+#+end_definition
+
+#+begin_proposition
+The unit and the counit satisfy the /triangle identities/.
+\[\begin{tikzcd}
+\G Y \drar[equal] \rar{\eta_{G Y}} & \G\F\G Y \dar{G \varepsilon_Y} &
+\F\G\F X \dar[swap]{\varepsilon_{F X}} & \F X \lar[swap]{F\eta_{X}} \dlar[equal] \\
+& \G Y & \F X &
+\end{tikzcd}\]
+#+end_proposition
+#+begin_proof
+We are going to show that both the identity and the morphisms on
+the side of the triangle are adjoints to an intermediate morphism.
+Because the adjunction is an isomorphism, they must be the same.
+\begin{prooftree}
+\AXC{\begin{tikzcd}[fragile,ampersand replacement=\&] 
+\G Y \rar{\eta_{GY}}\& 
+\G\F\G Y \rar{G\varepsilon_Y}\& 
+\G Y
+\end{tikzcd}}
+\UIC{\begin{tikzcd}[fragile,ampersand replacement=\&] 
+\F\G Y \rar{\id_{FGY}}\& 
+\F\G Y \rar{\varepsilon_Y}\& 
+Y
+\end{tikzcd}}
+\UIC{\begin{tikzcd}[fragile,ampersand replacement=\&]
+\G Y \rar{\id_{GY}} \&
+\G Y \rar{\id_{GY}} \& 
+\G Y 
+\phantom{Gy}
+\end{tikzcd}}
+\AXC{\begin{tikzcd}[fragile,ampersand replacement=\&] 
+\F X \rar{F\eta_X} \&
+\F\G\F Y \rar{\varepsilon_{FX}} \& 
+\F X
+\end{tikzcd}}
+\UIC{\begin{tikzcd}[fragile,ampersand replacement=\&]
+X \rar{\eta_{X}}\&
+\G\F X \rar{\id_{GFX}}\&
+\G\F X
+\end{tikzcd}}
+\UIC{\begin{tikzcd}[fragile,ampersand replacement=\&]
+\F X \rar{\id_{FX}}\&
+\F X \rar{\id_{FX}}\&
+\F X \end{tikzcd}}
+\noLine
+\AXC{\phantom{A}\qedhere}
+\TIC{}
+\end{prooftree}
+#+end_proof
+
+** Adjoints are unique
+#+begin_proposition
+Let $G \colon \Y \to \X$ be a functor with two adjoints, $\varphi \colon F \dashv G$
+and $\varphi' \colon F' \dashv G$. Then they are naturally isomorphic, $F \cong F'$.
+#+end_proposition
+#+begin_proof
+We define $\theta_X \colon FX \to F'X$ to be $\theta_X = \varphi'(\eta)$.  We also define
+$\theta_X' \colon F'X \to FX$ to be $\theta_{X} = \varphi(\eta')$.  We only need to prove that
+they are mutually inverses.
+\begin{prooftree}
+\AXC{\begin{tikzcd}[fragile,ampersand replacement=\&]
+\F\red{'} Y \rar{\theta} \& 
+\F Y \rar{\theta'}\& 
+\F\red{'} Y
+\end{tikzcd}}
+\RL{($\varphi'$)}
+\UIC{\begin{tikzcd}[fragile,ampersand replacement=\&] 
+Y \rar{\eta_{Y}}\& 
+\G\F Y \rar{G \theta'_Y}\& 
+\G\F\red{'} Y
+\end{tikzcd}}
+\RL{($\varphi$)}
+\UIC{\begin{tikzcd}[fragile,ampersand replacement=\&]
+\F Y \rar{\id_{FY}} \&
+\F Y \rar{\theta'_Y} \& 
+\F\red{'} Y 
+\end{tikzcd}}
+\RL{($\varphi$)}
+\UIC{\begin{tikzcd}[fragile,ampersand replacement=\&]
+Y \rar{\id_{FY}} \&
+Y \rar{\eta'_Y} \& 
+\G \F\red{'} Y
+\end{tikzcd}}
+\RL{($\varphi'$)}
+\UIC{\begin{tikzcd}[fragile,ampersand replacement=\&]
+\F\red{'} Y \rar{\id_{F'Y}} \&
+\F\red{'} Y \rar{\id_{F'Y}} \& 
+\F\red{'} Y
+\end{tikzcd}}
+\AXC{\qedhere}
+\noLine
+\BIC{}
+\end{prooftree}
+#+end_proof
+
+** Adjoints compose
+#+ATTR_LATEX: :options [Composition of adjunctions]
+#+BEGIN_theorem
+Given two adjunctions $\varphi \colon \Y(\F X,Y) \cong \X(X,\G Y)$ and $\varphi' \colon \Z(F'Y,Z) \cong \Y(Y,G'Z)$
+the composition gives an adjunction $\varphi \circ \varphi' \colon \Z(\red{F'F}X, Z) \cong \X(X,\blue{GG'}Z)$.
+#+END_theorem
+
+* Examples
+** Free monoids
+#+begin_proposicion
+Let us consider the category $\mathbf{Mon}$ of monoids and monoid homomorphisms.
+The functor $U \colon \mathbf{Mon} \to \mathbf{Sets}$ that forgets monoid structure has a left
+adjoint $F \colon \mathbf{Sets} \to \mathbf{Mon}$ called the /free monoid functor/.
+#+end_proposicion
+#+begin_proof
+Let $A \in \mathbf{Sets}$ be any set and let $(M, e, \cdot) \in \mathbf{Mon}$ be a monoid.
+\begin{prooftree}
+\AXC{\begin{tikzcd}[fragile,ampersand replacement=\&] \F A\rar{f}\& M \end{tikzcd}}
+\UIC{\begin{tikzcd}[fragile,ampersand replacement=\&] A \rar{\varphi{(f)}}\& \blue{U} M \end{tikzcd}}
+\end{prooftree}
+Here $\red{F}A$ is a monoid whose underlying set are words $\left\{ a_1\dots a_n \mid a_i \in A \right\}$,
+the unit is the empty word and the binary operation is the concatenation
+of words.  Assume a morphism $f \colon FA \to M$ from the free monoid over $A$,
+we will show that it can be reconstructed from $\varphi(f) \colon A \to M$, its restriction
+to the set.
+#+end_proof
+
+** Galois connections
+Partially ordered sets are categories $\C$ on which there exists a unique
+morphism $A \to B$ between two objects $A,B \in \C$ if and only if
+$A \leq B$.  A functor between two partially ordered sets is a monotone
+function.  A *Galois connection* is an adjunction between partially ordered
+sets.
+
+That is, a Galois connection between $\C$ and $\D$ is a pair of monotone functions
+$f \colon \C \to \D$ and $g \colon \D \to \C$ such that the following assertions imply each other.
+\begin{prooftree}
+\AXC{\begin{tikzcd}[fragile,ampersand replacement=\&] \red{f}(X) \leq Y \end{tikzcd}}
+\UIC{\begin{tikzcd}[fragile,ampersand replacement=\&] X \leq \blue{g}(Y) \end{tikzcd}}
+\end{prooftree}
+This cases are especially easy to identify.  Moreover, the naturality
+conditions here are trivial.
+
+** Interior
+* References                                                                                :ignore:
+bibliographystyle:alpha
+bibliography:adjunctions.bib
